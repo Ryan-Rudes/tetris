@@ -1,2 +1,1 @@
-# tetris
-Playing Tetris with AI
+# Tetris AI

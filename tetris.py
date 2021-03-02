@@ -1,9 +1,18 @@
 # Modified from https://gist.github.com/timurbakibayev/1f683d34487362b0f36280989c80960c
 
+# Modified from https://gist.github.com/timurbakibayev/1f683d34487362b0f36280989c80960c
+
 import gym
 import random
 import numpy as np
 from gym import Env
+
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+GRAY = (128, 128, 128)
+BLUE = (0, 0, 255)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
 
 class Figure:
     figures = [
@@ -15,10 +24,6 @@ class Figure:
         [[1, 4, 5, 6], [1, 4, 5, 9], [4, 5, 6, 9], [1, 5, 6, 9]],
         [[1, 2, 5, 6]],
     ]
-
-    BLACK = (0, 0, 0)
-    WHITE = (255, 255, 255)
-    GRAY = (128, 128, 128)
 
     def __init__(self, x, y):
         self.x = x
@@ -43,8 +48,8 @@ class Figure:
 class Tetris(Env):
     width = 10
     height = 20
-    x = 100
-    y = 60
+    x = 0
+    y = 0
     zoom = 20
 
     def __init__(self):
@@ -166,19 +171,19 @@ class Tetris(Env):
 
         if not pygame.get_init():
             pygame.init()
-
-        if self.screen is None:
-            size = (400, 500)
-            self.screen = pygame.display.set_mode(size)
             pygame.display.set_caption("Tetris")
 
-        self.screen.fill(self.WHITE)
+        if self.screen is None:
+            size = (200, 400)
+            self.screen = pygame.display.set_mode(size)
+
+        self.screen.fill(WHITE)
 
         for i in range(self.height):
             for j in range(self.width):
-                pygame.draw.rect(self.screen, self.GRAY, [self.x + self.zoom * j, self.y + self.zoom * i, self.zoom, self.zoom], 1)
+                pygame.draw.rect(self.screen, GRAY, [self.x + self.zoom * j, self.y + self.zoom * i, self.zoom, self.zoom], 1)
                 if self.board[i, j] > 0:
-                    pygame.draw.rect(self.screen, self.WHITE if self.board[i, j] else self.BLACK,
+                    pygame.draw.rect(self.screen, RED if self.board[i, j] else BLACK,
                                     [self.x + self.zoom * j + 1, self.y + self.zoom * i + 1, self.zoom - 2, self.zoom - 1])
 
         if self.figure is not None:
@@ -186,18 +191,18 @@ class Tetris(Env):
                 for j in range(4):
                     p = i * 4 + j
                     if p in self.figure.image:
-                        pygame.draw.rect(self.screen, self.WHITE,
+                        pygame.draw.rect(self.screen, BLUE,
                                         [self.x + self.zoom * (j + self.figure.x) + 1,
                                         self.y + self.zoom * (i + self.figure.y) + 1,
                                         self.zoom - 2, self.zoom - 2])
 
         font = pygame.font.SysFont('Calibri', 25, True, False)
         font1 = pygame.font.SysFont('Calibri', 65, True, False)
-        text = font.render("Score: " + str(self.score), True, self.BLACK)
+        text = font.render(str(self.score), True, BLUE)
         text_game_over = font1.render("Game Over", True, (255, 125, 0))
         text_game_over1 = font1.render("Press ESC", True, (255, 215, 0))
 
-        self.screen.blit(text, [0, 0])
+        self.screen.blit(text, [10, 10])
         if self.terminal:
             self.screen.blit(text_game_over, [20, 200])
             self.screen.blit(text_game_over1, [25, 265])

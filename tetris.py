@@ -1,7 +1,5 @@
 # Modified from https://gist.github.com/timurbakibayev/1f683d34487362b0f36280989c80960c
 
-# Modified from https://gist.github.com/timurbakibayev/1f683d34487362b0f36280989c80960c
-
 import gym
 import random
 import numpy as np
